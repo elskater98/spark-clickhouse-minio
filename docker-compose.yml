@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-  spark:
+  spark-master:
     image: docker.io/bitnami/spark:3.5
     environment:
       - SPARK_MODE=master
@@ -12,11 +12,16 @@ services:
       - SPARK_USER=spark
     ports:
       - '8080:8080'
+      - '7077:7077'
+      - '4040:4040'
+    volumes:
+      - './data/spark/scripts:/opt/bitnami/spark/scripts'
+      - './data/spark/datasets:/opt/bitnami/spark/datasets'
   spark-worker:
     image: docker.io/bitnami/spark:3.5
     environment:
       - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://spark:7077
+      - SPARK_MASTER_URL=spark://spark-master:7077
       - SPARK_WORKER_MEMORY=1G
       - SPARK_WORKER_CORES=1
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
@@ -31,7 +36,7 @@ services:
       - '9000:9000'
       - '9001:9001'
     volumes:
-      - './storage:/bitnami/minio/data'
+      - './data/storage:/bitnami/minio/data'
 
   clickhouse:
     image: docker.io/bitnami/clickhouse:24
@@ -41,4 +46,4 @@ services:
     ports:
       - '8123:8123'
     volumes:
-      - './clickhouse:/bitnami/clickhouse'
+      - './data/clickhouse:/bitnami/clickhouse'
