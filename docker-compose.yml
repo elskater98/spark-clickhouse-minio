@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   spark-master:
@@ -17,6 +17,7 @@ services:
     volumes:
       - './data/spark/scripts:/opt/bitnami/spark/scripts'
       - './data/spark/datasets:/opt/bitnami/spark/datasets'
+      - './data/spark/jars:/opt/bitnami/spark/jars'
   spark-worker:
     image: docker.io/bitnami/spark:3.5
     environment:
@@ -36,7 +37,10 @@ services:
       - '9000:9000'
       - '9001:9001'
     volumes:
-      - './data/storage:/bitnami/minio/data'
+      - 'minio:/bitnami/minio/data'
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=password
 
   clickhouse:
     image: docker.io/bitnami/clickhouse:24
@@ -46,4 +50,10 @@ services:
     ports:
       - '8123:8123'
     volumes:
-      - './data/clickhouse:/bitnami/clickhouse'
+      - 'clickhouse:/bitnami/clickhouse'
+      - './data/clickhouse:/docker-entrypoint-initdb.d' # chmod +x init-db.sh
+
+
+volumes:
+  clickhouse:
+  minio:
