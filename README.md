@@ -3,7 +3,7 @@
 Firstly, you need to create a ACCESS KEY to work with MINIO via API. So, create it and save the credentials in secure
 place.
 
-Secondly, to test the connection you can use the below script
+Secondly, to test the connection you can use the below script:
 
     # pip install minio
 
@@ -17,7 +17,7 @@ Secondly, to test the connection you can use the below script
 
     client.list_buckets()
 
-Upload `customer_booking.csv` file to bucket project.
+Upload `data/spark/datasets/customer_booking.csv` to the bucket `project`.
 
 # Environment Variables
 
@@ -26,9 +26,9 @@ Upload `customer_booking.csv` file to bucket project.
     AWS_SECRET_ACCESS_KEY=6tJdw7vgxBoKKTQ7ZXpX6ukomcgugzzR4xJQ8Ejo # example ACCESS KEY
 
 # Spark
-Add env. AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, MINIO_ENDPOINT variables to spark environment.
+Add env. `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `MINIO_ENDPOINT` variables to spark environment.
 
 
-To execute script use:
+Inside `spark-master` container execute the command `spark-submit` to run the job :
 
     spark-submit scripts/main.py
