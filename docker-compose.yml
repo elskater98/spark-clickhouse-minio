@@ -17,6 +17,10 @@ services:
     volumes:
       - './data/spark/scripts:/opt/bitnami/spark/scripts'
       - './data/spark/datasets:/opt/bitnami/spark/datasets'
+      - './data/spark/init-env.sh:/docker-entrypoint-initdb.d/init-env.sh'
+      - './requirements.txt:/docker-entrypoint-initdb.d/requirements.txt'
+      - './.env:/opt/bitnami/spark/scripts/.env'
+
 
   spark-worker:
     image: docker.io/bitnami/spark:3.5
@@ -30,6 +34,9 @@ services:
       - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
       - SPARK_SSL_ENABLED=no
       - SPARK_USER=spark
+    volumes:
+      - './data/spark/init-env.sh:/docker-entrypoint-initdb.d/init-env.sh'
+      - './requirements.txt:/docker-entrypoint-initdb.d/requirements.txt'
 
   minio:
     image: docker.io/bitnami/minio:2024
